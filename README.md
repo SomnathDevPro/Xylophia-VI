@@ -1,4 +1,4 @@
-![Xylophia IV](IMG-20240923-WA0014.jpg)
+![Xylophia IV](20240926_155346.jpg)
 # Xylophia-VI
 
 Play Xylophia IV, a thrilling top-down shooter, and survive against relentless alien hordes. Gather resources and hold on to hope.
