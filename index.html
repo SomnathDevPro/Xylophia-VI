@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, orientation=landscape">
+  <meta name="keywords" content="web games,dev.to challenges,web game dev challenge,web shooting games,alien games,mobile games,mobile web games" />
+  <link rel="shortcut icon" href="favicon.png">
+  <title>Xylophia IV: LOST IN VOID</title>
+  <style type="text/css" media="all">
+    body{
+       display: flex; 
+       justify-content: center; 
+       align-items: center;
+       flex-direction: column;
+    }
+    button{
+      padding:15px;
+      border:none;
+      font-family:monospace;
+    }
+    p{
+      font-weight: bold;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+   <img width="350" src="hometext.png" alt="">
+   <p id="highScore"></p>
+   <button onclick="window.location.href='game.html'">PLAY NOW</button>
+   <script>
+     const highScore = document.getElementById('highScore');
+     const data = localStorage.getItem('highScore');
+     if(data!==null){
+     highScore.innerHTML=`your highest kills:${data}`;
+     }else{
+       highScore.innerHTML="no kills yet"
+     }
+   </script>
+</body>
+</html>
