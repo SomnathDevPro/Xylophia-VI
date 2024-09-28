@@ -22,14 +22,30 @@
       font-weight: bold;
       font-family: monospace;
     }
+    h1{
+      font-family: monospace;
+    }
   </style>
 </head>
 <body>
-   <img width="350" src="hometext.png" alt="">
+   <h1>Xylophia VI</h1>
+   <p id="username"></p>
    <p id="highScore"></p>
    <button onclick="window.location.href='game.html'">PLAY NOW</button>
    <script>
+   
+   if(!localStorage.getItem("username")){
+     const username=prompt("enter your name")
+     localStorage.setItem("username",username)
+   }
+   const usernameDisplay = document.getElementById('username');
+   const userExp = parseInt(localStorage.getItem("exp"))
+   
+   const level = Math.floor(Math.sqrt(userExp/100));
+   
+   usernameDisplay.innerHTML=`${localStorage.getItem("username")}level:${level}`
      const highScore = document.getElementById('highScore');
+     
      const data = localStorage.getItem('highScore');
      if(data!==null){
      highScore.innerHTML=`your highest kills:${data}`;
