@@ -9,9 +9,9 @@ class GameScene extends Phaser.Scene {
     this.scoreText;
   }
   preload() {
-    const randint = Math.floor(Math.random() * 3)
-    const mapSrcArray = ["map.jpg", "map2.jpg", "map3.jpg"]
-    this.load.image("map", mapSrcArray[randint]);
+    const randint = Math.floor(Math.random() * 6)
+    const mapSrcArray = ["map.jpg", "map2.jpg", "map3.jpg","map4.png","map5.png","map6.png"]
+    this.load.image("map",mapSrcArray[randint]);
     this.load.image("player", "player.png", {
       compress: true
     });
