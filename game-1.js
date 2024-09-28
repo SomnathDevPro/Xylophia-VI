@@ -3,10 +3,10 @@ class GameScene extends Phaser.Scene {
     super('GameScene');
     this.enemyData = [];
     this.playerSpeed = 250;
-    this.playerHealth = 200;
-    this.killCount = 0;
+    this.playerHealth = 200
     this.score = 0;
     this.scoreText;
+    this.enemyDamage=20
   }
   preload() {
     const randint = Math.floor(Math.random() * 6)
@@ -35,6 +35,9 @@ class GameScene extends Phaser.Scene {
     if (!localStorage.getItem("highScore")) {
       localStorage.setItem("highScore", 0)
     }
+    if (!localStorage.getItem("exp")) {
+      localStorage.setItem("exp",0)
+    }
     //loading sounds
     this.shootSound = this.sound.add("shootSound");
     this.attackSound = this.sound.add("attackSound");
@@ -55,6 +58,7 @@ class GameScene extends Phaser.Scene {
     this.scoreText.angle = 90;
     this.scoreText.setOrigin(0.5, 0.5)
     this.scoreText.setScrollFactor(0)
+    this.scoreText.setDepth(3)
     //setting highscore text
     this.highScoreText = this.add.text(340, 400, "high:0", {
       fontsize: 32,
@@ -64,11 +68,14 @@ class GameScene extends Phaser.Scene {
     this.highScoreText.setOrigin(0.5, 0.5)
 
     this.highScoreText.setScrollFactor(0)
+    this.highScoreText.setDepth(3)
+    
     this.healthBar = this.add.graphics()
     this.healthBar.fillStyle(0xff0000)
     this.healthBar.fillRect(this.sys.game.config.width, 100, 15, 200)
     this.healthBar.setScrollFactor(0)
-
+    this.healthBar.setDepth(3)
+    this.healthBar.lineStyle(2,0xffffff)
     //initialising player
     this.player = this.physics.add.image(100, 150, "player");
     this.player.setOrigin(0.5, 0.5);
@@ -78,7 +85,7 @@ class GameScene extends Phaser.Scene {
     // Enemies
     this.enemyGroup = this.physics.add.group();
     this.radiationZones = this.physics.add.group()
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 4+Math.floor(Math.sqrt(parseInt(localStorage.getItem("exp"))/100)); i++) {
       // Tab to edit
       const x = Math.random() * (this.background.height - 200) + 100;
       const y = Math.random() * (this.background.width - 200) + 100;
@@ -141,11 +148,12 @@ class GameScene extends Phaser.Scene {
       if (enemyData && enemyData.type === 'boss') {
         this.playerHealth -= 100
       } else {
-        this.playerHealth -= 20
+        this.playerHealth -= this.enemyDamage
+        console.log(this.playerHealth)
       }
       this.healthBar.clear()
       this.healthBar.fillStyle(0xff0000)
-      this.healthBar.fillRect(340, 100, 15, this.playerHealth)
+      this.healthBar.fillRect(340, 100, 15, (this.playerHealth/200)*200)
       this.attackSound.play({
         loop: false,
         volume: 0.7
@@ -166,7 +174,7 @@ class GameScene extends Phaser.Scene {
       })
       if (this.playerHealth < 0) {
         this.playerHealth = 0
-      } else if (this.playerHealth === 0) {
+      } else if (this.playerHealth <= 0) {
         const gameOverText = this.add.text(this.sys.game.config.height / 2, this.sys.game.config.width / 2, "Game Over", {
           fontSize: 64,
           fill: "#ff0000"
@@ -179,12 +187,16 @@ class GameScene extends Phaser.Scene {
           localStorage.setItem("highScore", this.score)
         }
         setTimeout(() => {
+          window.location.href='index.html'
           location.reload()
+          let exp = parseInt(localStorage.getItem("exp"))
+          exp+=this.score*10
+          localStorage.setItem("exp",exp)
         }, 2000)
       }
     })
     this.time.addEvent({
-      delay: 60000,
+      delay:60000,
       callback: this.spawnWave,
       callbackScope: this,
       loop: true
